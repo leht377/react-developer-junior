@@ -5,8 +5,8 @@ export type WorkshiftDays = {
     day: string
     start_at: string
     finished_at: string
-    break_time_start_at: string
-    break_time_finished_at: string
+    break_time_start_at: string | null
+    break_time_finished_at: string | null
     created_at: Date
     updated_at: Date
   }

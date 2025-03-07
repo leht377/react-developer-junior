@@ -2,6 +2,7 @@ import { scheduleType, Workshifts } from '@/domain/types/workshifts'
 import { WorkshiftsDayMapper } from './workshiftDays.mapper'
 
 export const WorkshiftsMapper = (workshift: Record<string, unknown>): Workshifts => {
+
   if (typeof workshift !== 'object' || workshift === null) {
     throw new Error("El campo 'workshifts' debe ser un objeto.")
   }

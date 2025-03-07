@@ -39,13 +39,13 @@ const validateAttributes = (attributes: Record<string, unknown>): WorkshiftDays[
     throw new Error("El campo 'start_at' de los atributos de WorkshiftDays debe ser un string.")
   if (typeof finished_at !== 'string')
     throw new Error("El campo 'finished_at' de los atributos de WorkshiftDays debe ser un string.")
-  if (typeof break_time_start_at !== 'string')
+  if (typeof break_time_start_at !== 'string' && break_time_start_at !== null)
     throw new Error(
-      "El campo 'break_time_start_at' de los atributos de WorkshiftDays debe ser un string."
+      "El campo 'break_time_start_at' de los atributos de WorkshiftDays debe ser un string o null."
     )
-  if (typeof break_time_finished_at !== 'string')
+  if (typeof break_time_finished_at !== 'string' && break_time_start_at !== null)
     throw new Error(
-      "El campo 'break_time_finished_at' de los atributos de WorkshiftDays debe ser un string."
+      "El campo 'break_time_finished_at' de los atributos de WorkshiftDays debe ser un string  o null."
     )
   if (typeof created_at !== 'string')
     throw new Error("El campo 'created_at' de los atributos de WorkshiftDays debe ser un string.")
