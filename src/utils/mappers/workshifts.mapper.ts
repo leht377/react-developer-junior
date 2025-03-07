@@ -1,4 +1,4 @@
-import { scheduleType, Workshifts } from '@/domain/types/workshifts'
+import { ScheduleType, Workshifts } from '@/domain/types/workshifts'
 import { WorkshiftsDayMapper } from './workshiftDays.mapper'
 
 export const WorkshiftsMapper = (workshift: Record<string, unknown>): Workshifts => {
@@ -46,7 +46,7 @@ const validateAtributes = (attributes: Record<string, unknown>):Workshifts["attr
   if (typeof maximun_weekly_hours !== 'number')
     throw new Error("El campo 'maximun_weekly_hours' debe ser un número.")
 
-  return { name, schedule_type:schedule_type as scheduleType, maximun_weekly_hours, created_at: new Date(created_at), updated_at: new Date(updated_at) }
+  return { name, schedule_type:schedule_type as ScheduleType, maximun_weekly_hours, created_at: new Date(created_at), updated_at: new Date(updated_at) }
 }
 
 const validateRelationships = (relationships : Record<string, unknown>): Workshifts["relationships"] => {

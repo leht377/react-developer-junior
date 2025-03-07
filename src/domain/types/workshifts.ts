@@ -13,14 +13,14 @@ export type WorkshiftDays = {
 }
 
 
-export type scheduleType = 'fixed' | 'fixed_halftime' | 'flexible'
+export type ScheduleType = 'fixed' | 'fixed_halftime' | 'flexible'
 
 export type Workshifts = {
   type: string
   id: number
   attributes: {
     name: string
-    schedule_type: scheduleType
+    schedule_type: ScheduleType
     maximun_weekly_hours: number
     created_at: Date
     updated_at: Date
