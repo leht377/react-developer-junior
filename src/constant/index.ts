@@ -1,11 +1,13 @@
 const MAX_LEGAL_WORKING_HOURS = 42 // Horas máximas legales de trabajo
-const DAYS_OF_WEEK = 7 // Días en una semana (corrigiendo el error)
-const WORKING_DAYS_PER_WEEK = 6 // Si te refieres a días laborales en una semana
+const DAYS_OF_WEEK = 7 // Días en una semana
+const WORKING_DAYS_PER_WEEK = 6 // Días laborales en una semana
 const DAYS_OF_MONTH = 30 // Días en un mes estándar
-const NIGHT_SHIFT_SURCHARGE_PERCENTAGE = 0.35
-const HOLIDAY_SHIFT_SURCHARGE_PERCENTAGE = 0.75
-const DAYTIME_OVERTIME_HOUR_PERCENTAGE = 0.25
-const NIGHTTIME_OVERTIME_HOUR_PERCENTAGE  = 0.75
+const NIGHT_SHIFT_SURCHARGE_PERCENTAGE = 0.35 // Porcentaje de recargo para el turno nocturno 
+const HOLIDAY_SHIFT_SURCHARGE_PERCENTAGE = 0.75 // Porcentaje de recargo para turnos en días festivos o domingos 
+const DAYTIME_OVERTIME_HOUR_PERCENTAGE = 0.25 // Porcentaje de recargo para horas extras diurnas
+const NIGHTTIME_OVERTIME_HOUR_PERCENTAGE  = 0.75  // Porcentaje de recargo para horas extras nocturnas 
+
+
 
 // Trabajo diurno: aquel que se realiza entre las 6:00 a. m. y las 9:00 p. m.
 // Trabajo nocturno: aquel que se lleva a cabo entre las 9:00 p. m. y las 6:00 a. m.
