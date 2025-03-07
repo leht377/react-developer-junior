@@ -1,4 +1,4 @@
-type WorkshiftDays = {
+export type WorkshiftDays = {
   type: string
   id: number
   attributes: {
