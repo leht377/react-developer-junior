@@ -5,13 +5,17 @@ import { generatePagination } from '@/utils/helpers/generatePagination.helper'
 import { Pagination } from '@/domain/types/pagination'
 
 const getEmployees = (
-  page: number = 330,
+  page: number = 1,
   limit: number = 10
 ): { data: EmployeeEntity[]; pagination: Pagination } => {
-  const data = employeesList.data.slice(0, 10)
+  const pagination = generatePagination(employeesList.data, page, limit)
+
+  const startIndex = (pagination.page - 1) * pagination.limit; 
+  const endIndex = startIndex + pagination.limit; 
+
+  const data = employeesList.data.slice(startIndex, endIndex)
   const dataMapped = data.map((d) => EmployeMapper(d))
 
-  const pagination = generatePagination(employeesList.data, page, limit)
 
   return { data: dataMapped, pagination }
 }
