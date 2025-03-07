@@ -17,6 +17,16 @@ const MIN_NIGHT_SHIFT_RATE = 8355 // Valor mínimo con recargo nocturno
 const MIN_HOLIDAY_SHIFT_RATE = 10831 // Valor mínimo con recargo dominical o festivo
 const MIN_NIGHT_HOLIDAY_SHIFT_RATE = 12997 // Valor mínimo con recargo nocturno en dominical o festivo
 
+enum DAYS_OF_WEEK_NAMES {
+  MONDAY = 1, // LUNES
+  TUESDAY = 2, // MARTES
+  WEDNESDAY = 3, // MIERCOLES
+  THURSDAY = 4, // JUEVES
+  FRIDAY = 5, // VIERNES
+  SATURDAY = 6, // SABADO
+  SUNDAY = 7 // DOMINGO
+}
+
 // Trabajo diurno: aquel que se realiza entre las 6:00 a. m. y las 9:00 p. m.
 // Trabajo nocturno: aquel que se lleva a cabo entre las 9:00 p. m. y las 6:00 a. m.
 
@@ -37,5 +47,6 @@ export {
   MIN_NIGHTTIME_HOLIDAY_OVERTIME_HOUR_RATE,
   MIN_NIGHT_SHIFT_RATE,
   MIN_HOLIDAY_SHIFT_RATE,
-  MIN_NIGHT_HOLIDAY_SHIFT_RATE
+  MIN_NIGHT_HOLIDAY_SHIFT_RATE,
+  DAYS_OF_WEEK_NAMES
 }
