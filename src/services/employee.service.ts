@@ -3,21 +3,52 @@ import { employeesList } from '../data/employee'
 import { EmployeMapper } from '@/utils/mappers/employe.mapper'
 import { generatePagination } from '@/utils/helpers/generatePagination.helper'
 import { Pagination } from '@/domain/types/pagination'
+import { Query } from '@/domain/types/query'
 
-const getEmployees = (
-  page: number = 1,
-  limit: number = 10
-): { data: EmployeeEntity[]; pagination: Pagination } => {
-  const pagination = generatePagination(employeesList.data, page, limit)
+const getEmployees = (query: Query): { data: EmployeeEntity[]; pagination: Pagination } => {
+  const { page, limit, orderBy, order, search } = query
+  let filteredData = employeesList.data
 
-  const startIndex = (pagination.page - 1) * pagination.limit; 
-  const endIndex = startIndex + pagination.limit; 
+  if (search) {
+    filteredData = filteredData.filter((employee) => {
+      return (
+        (search.name
+          ? employee.attributes.first_name.toLowerCase().includes(search.name.toLowerCase())
+          : true) ||
+        (search.email
+          ? employee.attributes.email.toLowerCase().includes(search.email.toLowerCase())
+          : true) ||
+        (search.charge
+          ? employee.attributes.charge.toLowerCase().includes(search.charge.toLowerCase())
+          : true)
+      )
+    })
+  }
 
-  const data = employeesList.data.slice(startIndex, endIndex)
-  const dataMapped = data.map((d) => EmployeMapper(d))
+  if (orderBy) {
+    filteredData.sort((a, b) => {
+      if (orderBy === 'salary') {
+        return order === 'desc'
+          ? b.attributes.salary - a.attributes.salary
+          : a.attributes.salary - b.attributes.salary
+      }
+      if (orderBy === 'name') {
+        return order === 'desc'
+          ? b.attributes.first_name.localeCompare(a.attributes.first_name)
+          : a.attributes.first_name.localeCompare(b.attributes.first_name)
+      }
+      return 0
+    })
+  }
 
+  const pagination = generatePagination(filteredData, Number(page), Number(limit))
+  const startIndex = (pagination.page - 1) * pagination.limit
+  const endIndex = startIndex + pagination.limit
 
-  return { data: dataMapped, pagination }
+  const data = filteredData.slice(startIndex, endIndex).map((d) => EmployeMapper(d))
+
+ 
+  return { data, pagination }
 }
 
 export { getEmployees }
