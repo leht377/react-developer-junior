@@ -1,6 +1,6 @@
 import { EmployeeEntity } from '@/domain/entities/employe.entity'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import RowBody from './components/RowBody'
 import RowSkeleton from './components/RowSkeleton'
 import Pagination from './components/Pagination'
@@ -79,13 +79,6 @@ const Table: React.FC<Props> = ({
           </tbody>
         </table>
       </div>
-      {/* <div className='flex justify-end items-center'>
-        <Pagination
-          currentPage={pagination.page}
-          totalPages={pagination.totalPages}
-          onPageChange={onPageChange}
-        />
-      </div> */}
     </div>
   )
 }
