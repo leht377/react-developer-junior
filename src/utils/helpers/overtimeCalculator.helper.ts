@@ -454,6 +454,7 @@ const calcularRCN = (scheduleType: ScheduleType, employe: EmployeeEntity): numbe
 
   // }
   // return horas
+  return 0
 }
 
 export const overtimerCalculator = {

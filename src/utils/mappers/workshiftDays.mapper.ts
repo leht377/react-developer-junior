@@ -18,7 +18,8 @@ export const WorkshiftsDayMapper = (workshiftDay: Record<string, unknown>): Work
   }
 }
 
-const validateAttributes = (attributes: Record<string, unknown>): WorkshiftDays['attributes'] => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const validateAttributes = (attributes: Record<string, any>): WorkshiftDays['attributes'] => {
   if (typeof attributes !== 'object' || attributes === null) {
     throw new Error("El campo 'attributes' en 'WorkshiftDays' debe ser un objeto.")
   }
