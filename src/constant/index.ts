@@ -1,4 +1,4 @@
-const MAX_LEGAL_WORKING_HOURS = 42 // Horas máximas legales de trabajo
+const MAX_LEGAL_WORKING_HOURS = 46 // Horas máximas legales de trabajo
 const DAYS_OF_WEEK = 7 // Días en una semana
 const WORKING_DAYS_PER_WEEK = 6 // Días laborales en una semana
 const DAYS_OF_MONTH = 30 // Días en un mes estándar
