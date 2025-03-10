@@ -36,7 +36,7 @@ const Table: React.FC<Props> = ({
           onPageChange={onPageChange}
         />
       </div>
-      <div className='w-full max-h-[450px] flex justify-center items-start overflow-y-auto'>
+      <div className='w-full max-h-[460px] flex justify-center items-start overflow-y-auto'>
         <table className='w-full border-collapse border border-gray-300 overflow-hidden '>
           <thead>
             <tr className='bg-gray-200 text-gray-700 top-0 '>
