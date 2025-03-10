@@ -24,7 +24,7 @@ enum DAYS_OF_WEEK_NAMES {
   THURSDAY = 4, // JUEVES
   FRIDAY = 5, // VIERNES
   SATURDAY = 6, // SABADO
-  SUNDAY = 7 // DOMINGO
+  SUNDAY = 0 // DOMINGO
 }
 
 // Trabajo diurno: aquel que se realiza entre las 6:00 a. m. y las 9:00 p. m.
