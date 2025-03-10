@@ -4,16 +4,22 @@ import React from 'react'
 import Table from './components/table/Table'
 import SearchInput from '@/components/SearchInput'
 import useEmployeeData from './hooks/useEmployeeData'
-
+import { useDebounce } from 'use-debounce'
+import useDebouncedSearch from '@/hooks/useDebouncedSearch'
 const Employee = () => {
   const { employees, paginationState, query, setQuery } = useEmployeeData()
 
-  const onPageChange = (page: number) => {
-    setQuery({ ...query, page })
-  }
-
   const onSearch = (search: string) => {
     setQuery({ ...query, search: { charge: search, email: search, name: search } })
+  }
+
+  const { setSearchTerm } = useDebouncedSearch({
+    delay: 500,
+    onDebouncedChange: onSearch
+  })
+
+  const onPageChange = (page: number) => {
+    setQuery({ ...query, page })
   }
 
   const onChangeItemsPerPage = (value: number) => {
@@ -24,7 +30,7 @@ const Employee = () => {
     <main className='flex justify-top items-center w-full h-auto  flex-col gap-6 py-4 '>
       <div className='max-w-7xl w-7xl flex flex-col gap-2'>
         <div>
-          <SearchInput onSearch={onSearch} placeholder='Buscar por correo email o nombre' />
+          <SearchInput onSearch={setSearchTerm} placeholder='Buscar por correo email o nombre' />
         </div>
         {paginationState && (
           <Table
