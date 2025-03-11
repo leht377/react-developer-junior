@@ -28,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
           onClick={onClose}
         >
           <motion.div
-            className='bg-white rounded-lg shadow-lg w-[90%] max-w-3xl p-5 relative'
+            className='bg-white rounded-lg shadow-lg w-[90%] max-w-7xl p-5 relative'
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -40,7 +40,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
 
             {title && <h2 className='text-lg font-semibold mb-4'>{title}</h2>}
 
-            <div>{children}</div>
+            <div className=' max-h-[450px] overflow-y-auto'>{children}</div>
           </motion.div>
         </motion.div>
       )}
