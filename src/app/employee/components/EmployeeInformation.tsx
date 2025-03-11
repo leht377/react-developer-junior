@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useEmployeeContext } from '../context/EmployeeContext'
 import { overtime } from '../utils/helpers/overtime'
 import { formatToColombianPeso } from '@/utils/helpers/formatToColombianPeso.helper'
@@ -49,12 +49,22 @@ const overtimeDataInitialState: Array<{
 
 const EmployeeInformation = () => {
   const { employeesSelected } = useEmployeeContext()
-  const [regularHours, setRegularHours] = useState(160) // Default: 160 horas al mes
+  const [salaryplusOvertime, setSalaryplusOvertime] = useState(0)
 
   const overtimeData = useMemo(() => {
     if (!employeesSelected) return { HED: 0, HEDD: 0, HEDN: 0, HEN: 0, RC: 0, RD: 0, RND: 0 }
     return overtime(employeesSelected)
   }, [employeesSelected])
+
+  useMemo(() => {
+    if (employeesSelected) {
+      let s = 0
+      overtimeDataInitialState.map((item, index) => {
+        s += (overtimeData[item.code] || 0) * item.calculate(employeesSelected?.hourlyRate!)
+      })
+      setSalaryplusOvertime(s)
+    }
+  }, [overtimeData])
 
   const renderedTable = () => {
     return (
@@ -73,7 +83,8 @@ const EmployeeInformation = () => {
               <th className='px-4 py-2 text-left'>Código</th>
               <th className='px-4 py-2 text-left'>Descripción</th>
               <th className='px-4 py-2 text-left'>Horas</th>
-              <th className='px-4 py-2 text-left'>Valor</th>
+              <th className='px-4 py-2 text-left'>Valor de la hora</th>
+              <th className='px-4 py-2 text-left'>Total</th>
             </tr>
           </thead>
           <tbody>
@@ -85,12 +96,22 @@ const EmployeeInformation = () => {
                   {overtimeData[item.code] || 0}
                 </td>
                 <td className='px-4 py-2  font-bold text-blue-600'>
+                  {formatToColombianPeso(item.calculate(employeesSelected?.hourlyRate!))}
+                </td>
+                <td className='px-4 py-2  font-bold text-blue-600'>
                   {formatToColombianPeso(
                     (overtimeData[item.code] || 0) * item.calculate(employeesSelected?.hourlyRate!)
                   )}
                 </td>
               </tr>
             ))}
+            <tr className='bg-gray-200'>
+              <td className='px-4 py-2 font-bold'>TOTAL</td>
+              <td className='px-4 py-2 font-bold'></td>
+              <td className='px-4 py-2 font-bold'></td>
+              <td className='px-4 py-2 font-bold'></td>
+              <td className='px-4 py-2 font-bold'>{formatToColombianPeso(salaryplusOvertime)}</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -128,18 +149,12 @@ const EmployeeInformation = () => {
             <h2 className='text-lg font-semibold text-gray-700 mb-2'>
               Cálculo de Salario Estimado
             </h2>
-            <div className='flex items-center space-x-4'>
-              <label className='text-gray-600 font-medium'>Horas Regulares:</label>
-              <input
-                type='number'
-                className='border rounded-lg px-3 py-1 w-20 text-center focus:outline-none focus:ring-2 focus:ring-blue-400'
-                value={regularHours}
-                onChange={(e) => setRegularHours(Number(e.target.value))}
-              />
-            </div>
+
             <p className='text-gray-700 mt-2'>
               <strong>Salario Estimado:</strong>{' '}
-              <span className='text-green-600 font-bold text-lg'>${0}</span>
+              <span className='text-green-600 font-bold text-lg'>
+                {formatToColombianPeso(employeesSelected.attributes.salary + salaryplusOvertime)}
+              </span>
             </p>
           </div>
 
