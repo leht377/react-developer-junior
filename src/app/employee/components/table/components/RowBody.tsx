@@ -26,7 +26,7 @@ const RowBody: React.FC<props> = ({
       <td className='border border-gray-300 px-4 py-2'>{email}</td>
       <td className='border border-gray-300 px-4 py-2'>{charge}</td>
       <td className='border border-gray-300 px-4 py-2'>{formatToColombianPeso(salary)}</td>
-      <td className='border border-gray-300 px-4 py-2 flex justify-center items-center'>
+      <td className='border border-gray-300 px-4 py-2 text-center'>
         <button className='cursor-pointer' onClick={() => onClickOption(id)}>
           <SVGIcon name='calculator' />
         </button>
