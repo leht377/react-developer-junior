@@ -1,11 +1,12 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Table from './components/table/Table'
 import SearchInput from '@/components/SearchInput'
 import useEmployeeData from './hooks/useEmployeeData'
-import { useDebounce } from 'use-debounce'
 import useDebouncedSearch from '@/hooks/useDebouncedSearch'
+import Modal from '@/components/Modal'
+
 const Employee = () => {
   const { employees, paginationState, query, setQuery } = useEmployeeData()
 
@@ -27,20 +28,20 @@ const Employee = () => {
   }
 
   return (
-    <main className='flex justify-top items-center w-full h-auto  flex-col gap-6 py-4 '>
+    <main className='flex justify-top items-center w-full h-auto flex-col gap-6 py-4 '>
       <div className='max-w-7xl w-7xl flex flex-col gap-2'>
         <div>
           <SearchInput onSearch={setSearchTerm} placeholder='Buscar por correo email o nombre' />
         </div>
-        {paginationState && (
-          <Table
-            data={employees}
-            pagination={paginationState}
-            onPageChange={onPageChange}
-            onChangeItemsPerPage={onChangeItemsPerPage}
-            itemsPerPage={query.limit}
-          />
-        )}
+
+        <Table
+          data={employees}
+          pagination={paginationState}
+          onPageChange={onPageChange}
+          onChangeItemsPerPage={onChangeItemsPerPage}
+          itemsPerPage={query.limit}
+          // isloading={true}
+        />
       </div>
     </main>
   )

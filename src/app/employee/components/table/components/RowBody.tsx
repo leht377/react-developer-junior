@@ -1,3 +1,4 @@
+import SVGIcon from '@/components/SVGIcon'
 import { formatToColombianPeso } from '@/utils/helpers/formatToColombianPeso.helper'
 import React from 'react'
 interface props {
@@ -7,8 +8,17 @@ interface props {
   email: string
   charge: string
   salary: number
+  onClickOption: (employeId: number) => void
 }
-const RowBody: React.FC<props> = ({ charge, email, firstName, id, lastName, salary }) => {
+const RowBody: React.FC<props> = ({
+  charge,
+  email,
+  firstName,
+  id,
+  lastName,
+  salary,
+  onClickOption
+}) => {
   return (
     <tr className='bg-white hover:bg-gray-100' key={id}>
       <td className='border border-gray-300 px-4 py-2'>{firstName}</td>
@@ -16,7 +26,11 @@ const RowBody: React.FC<props> = ({ charge, email, firstName, id, lastName, sala
       <td className='border border-gray-300 px-4 py-2'>{email}</td>
       <td className='border border-gray-300 px-4 py-2'>{charge}</td>
       <td className='border border-gray-300 px-4 py-2'>{formatToColombianPeso(salary)}</td>
-      <td className='border border-gray-300 px-4 py-2'></td>
+      <td className='border border-gray-300 px-4 py-2 flex justify-center items-center'>
+        <button className='cursor-pointer' onClick={() => onClickOption(id)}>
+          <SVGIcon name='calculator' />
+        </button>
+      </td>
     </tr>
   )
 }
