@@ -7,7 +7,7 @@ const RowSkeleton: React.FC<props> = ({ rows }) => {
     <tr>
       {Array.from({ length: rows }).map((_, i) => (
         <td className='' key={i + rows}>
-          <div className='bg-gray-300 h-4 animate-pulse '></div>
+          <div className='border border-gray-300 bg-gray-200 animate-pulse h-11'></div>
         </td>
       ))}
     </tr>

@@ -82,7 +82,7 @@ const Table: React.FC<Props> = ({
             </thead>
             <tbody>
               {isloading
-                ? Array.from({ length: 8 }).map((_, i) => <RowSkeleton rows={6} key={i} />)
+                ? Array.from({ length: 9 }).map((_, i) => <RowSkeleton rows={6} key={i} />)
                 : sortedData.map((emp) => (
                     <RowBody
                       id={emp.id}

@@ -8,7 +8,7 @@ import useDebouncedSearch from '@/hooks/useDebouncedSearch'
 import Modal from '@/components/Modal'
 
 const Employee = () => {
-  const { employees, paginationState, query, setQuery } = useEmployeeData()
+  const { employees, paginationState, query, setQuery, loading } = useEmployeeData()
 
   const onSearch = (search: string) => {
     setQuery({ ...query, search: { charge: search, email: search, name: search } })
@@ -40,7 +40,7 @@ const Employee = () => {
           onPageChange={onPageChange}
           onChangeItemsPerPage={onChangeItemsPerPage}
           itemsPerPage={query.limit}
-          // isloading={true}
+          isloading={loading}
         />
       </div>
     </main>
