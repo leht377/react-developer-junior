@@ -6,6 +6,11 @@ import { DAYS_OF_WEEK_NAMES } from '@/constant'
 import { isHoliday } from './holiday.helper'
 import { AccessControls } from '@/domain/types/accessControl'
 
+const hora_minima_jornada_diurna = convertHourToSeconds('06:00')
+const hora_maxima_jornada_diurna = convertHourToSeconds('21:00')
+const hora_inicio_jornada_noturno = convertHourToSeconds('21:00')
+const hora_fin_jornada_noturno = convertHourToSeconds('06:00')
+
 const calcularHED = (scheduleType: ScheduleType, accessControls: AccessControls): number => {
   let horasExtrasSegundos = 0
 
@@ -15,37 +20,7 @@ const calcularHED = (scheduleType: ScheduleType, accessControls: AccessControls)
   }
   //OBTENER TIPO DE HORARIO
 
-  const horariosDeTrabajo = getWorkSchedule(scheduleType)
-
-  const hora_minima_jornada_diurna = convertHourToSeconds('06:00')
-  const hora_maxima_jornada_diurna = convertHourToSeconds('21:00')
-
-  const rangoHorasTrabajoDiurnoPorDia = new Map<
-    number,
-    {
-      start_at: number
-      finished_at: number
-      breakTime: {
-        start_at: number
-        finished_at: number
-      } | null
-    }
-  >()
-
-  horariosDeTrabajo?.schedules.forEach((horario) => {
-    horario.days.forEach((dia) => {
-      rangoHorasTrabajoDiurnoPorDia.set(dia, {
-        start_at: convertHourToSeconds(horario.workHours.start),
-        finished_at: convertHourToSeconds(horario.workHours.end),
-        breakTime: horario.breakTime
-          ? {
-              start_at: convertHourToSeconds(horario.breakTime.start),
-              finished_at: convertHourToSeconds(horario.breakTime.end)
-            }
-          : null
-      })
-    })
-  })
+  const rangoHorasTrabajoPorDia = mapHorarioDeTrabajo(scheduleType)
 
   const { check_in, check_out } = accessControls.attributes
 
@@ -61,7 +36,7 @@ const calcularHED = (scheduleType: ScheduleType, accessControls: AccessControls)
     `${check_out.getHours()}:${check_out.getMinutes()}:${check_out.getSeconds()}`
   )
 
-  const horario_del_dia = rangoHorasTrabajoDiurnoPorDia.get(check_in.getDay()) //PUDE SER NULL SI EL DIA NO ESTA EN EL MAP COMO UN DOMINGO
+  const horario_del_dia = rangoHorasTrabajoPorDia.get(check_in.getDay()) //PUDE SER NULL SI EL DIA NO ESTA EN EL MAP COMO UN DOMINGO
 
   const hora_ingreso_acotada =
     hora_ingreso < hora_minima_jornada_diurna ? hora_minima_jornada_diurna : hora_ingreso
@@ -130,37 +105,7 @@ const calcularHEN = (scheduleType: ScheduleType, accessControls: AccessControls)
   }
   //OBTENER TIPO DE HORARIO
 
-  const horariosDeTrabajo = getWorkSchedule(scheduleType)
-
-  const hora_inicio_jornada_noturno = convertHourToSeconds('21:00')
-  const hora_fin_jornada_noturno = convertHourToSeconds('06:00')
-
-  const rangoHorasTrabajoPorDia = new Map<
-    number,
-    {
-      start_at: number
-      finished_at: number
-      breakTime: {
-        start_at: number
-        finished_at: number
-      } | null
-    }
-  >()
-
-  horariosDeTrabajo?.schedules.forEach((horario) => {
-    horario.days.forEach((dia) => {
-      rangoHorasTrabajoPorDia.set(dia, {
-        start_at: convertHourToSeconds(horario.workHours.start),
-        finished_at: convertHourToSeconds(horario.workHours.end),
-        breakTime: horario.breakTime
-          ? {
-              start_at: convertHourToSeconds(horario.breakTime.start),
-              finished_at: convertHourToSeconds(horario.breakTime.end)
-            }
-          : null
-      })
-    })
-  })
+  const rangoHorasTrabajoPorDia = mapHorarioDeTrabajo(scheduleType)
 
   const { check_in, check_out } = accessControls.attributes
 
@@ -237,38 +182,7 @@ const calcularHEDDominical = (
     return horasExtrasSegundos
   }
   //OBTENER TIPO DE HORARIO
-
-  const horariosDeTrabajo = getWorkSchedule(scheduleType)
-
-  const hora_minima_jornada_diurna = convertHourToSeconds('06:00')
-  const hora_maxima_jornada_diurna = convertHourToSeconds('21:00')
-
-  const rangoHorasTrabajoDiurnoPorDia = new Map<
-    number,
-    {
-      start_at: number
-      finished_at: number
-      breakTime: {
-        start_at: number
-        finished_at: number
-      } | null
-    }
-  >()
-
-  horariosDeTrabajo?.schedules.forEach((horario) => {
-    horario.days.forEach((dia) => {
-      rangoHorasTrabajoDiurnoPorDia.set(dia, {
-        start_at: convertHourToSeconds(horario.workHours.start),
-        finished_at: convertHourToSeconds(horario.workHours.end),
-        breakTime: horario.breakTime
-          ? {
-              start_at: convertHourToSeconds(horario.breakTime.start),
-              finished_at: convertHourToSeconds(horario.breakTime.end)
-            }
-          : null
-      })
-    })
-  })
+  const rangoHorasTrabajoPorDia = mapHorarioDeTrabajo(scheduleType)
 
   const { check_in, check_out } = accessControls.attributes
 
@@ -281,7 +195,7 @@ const calcularHEDDominical = (
       `${check_out.getHours()}:${check_out.getMinutes()}:${check_out.getSeconds()}`
     )
 
-    const horario_del_dia = rangoHorasTrabajoDiurnoPorDia.get(check_in.getDay()) //PUDE SER NULL SI EL DIA NO ESTA EN EL MAP COMO UN DOMINGO
+    const horario_del_dia = rangoHorasTrabajoPorDia.get(check_in.getDay()) //PUDE SER NULL SI EL DIA NO ESTA EN EL MAP COMO UN DOMINGO
 
     const hora_ingreso_acotada =
       hora_ingreso < hora_minima_jornada_diurna ? hora_minima_jornada_diurna : hora_ingreso
@@ -344,37 +258,7 @@ const calcularHENDominical = (
   }
   //OBTENER TIPO DE HORARIO
 
-  const horariosDeTrabajo = getWorkSchedule(scheduleType)
-
-  const hora_inicio_jornada_noturno = convertHourToSeconds('21:00')
-  const hora_fin_jornada_noturno = convertHourToSeconds('06:00')
-
-  const rangoHorasTrabajoPorDia = new Map<
-    number,
-    {
-      start_at: number
-      finished_at: number
-      breakTime: {
-        start_at: number
-        finished_at: number
-      } | null
-    }
-  >()
-
-  horariosDeTrabajo?.schedules.forEach((horario) => {
-    horario.days.forEach((dia) => {
-      rangoHorasTrabajoPorDia.set(dia, {
-        start_at: convertHourToSeconds(horario.workHours.start),
-        finished_at: convertHourToSeconds(horario.workHours.end),
-        breakTime: horario.breakTime
-          ? {
-              start_at: convertHourToSeconds(horario.breakTime.start),
-              finished_at: convertHourToSeconds(horario.breakTime.end)
-            }
-          : null
-      })
-    })
-  })
+  const rangoHorasTrabajoPorDia = mapHorarioDeTrabajo(scheduleType)
 
   const { check_in, check_out } = accessControls.attributes
 
@@ -439,17 +323,122 @@ const calcularHENDominical = (
   return horasExtrasSegundos
 }
 
-const calcularRCN = (scheduleType: ScheduleType, employe: EmployeeEntity): number => {
-  // let horas = 0
-  // const hora_inicio_jornada_noturno = convertHourToSeconds('21:00')
-  // const hora_fin_jornada_noturno = convertHourToSeconds('06:00')
+const calcularRC = (scheduleType: ScheduleType, accessControls: AccessControls): number => {
+  let horasExtrasSegundos = 0
 
-  // if (scheduleType === 'fixed_halftime' || scheduleType === 'fixed') return horas
-  // if (scheduleType === 'flexible') {
+  const { check_in, check_out } = accessControls.attributes
 
-  // }
-  // return horas
+  if (scheduleType === 'fixed' || scheduleType === 'fixed_halftime') {
+    const rangoHorasTrabajoPorDia = mapHorarioDeTrabajo(scheduleType)
+
+    const horario_del_dia = rangoHorasTrabajoPorDia.get(check_in.getDay())
+    if (!horario_del_dia) return horasExtrasSegundos
+
+    const hora_ingreso = convertHourToSeconds(
+      `${check_in.getHours()}:${check_in.getMinutes()}:${check_in.getSeconds()}`
+    )
+    const hora_salida = convertHourToSeconds(
+      `${check_out.getHours()}:${check_out.getMinutes()}:${check_out.getSeconds()}`
+    )
+
+    return 0
+  } else if (scheduleType === 'flexible') {
+    const hora_ingreso = convertHourToSeconds(
+      `${check_in.getHours()}:${check_in.getMinutes()}:${check_in.getSeconds()}`
+    )
+    const hora_salida = convertHourToSeconds(
+      `${check_out.getHours()}:${check_out.getMinutes()}:${check_out.getSeconds()}`
+    )
+
+    //condicion de no horas nocturnas si es el mismo dia
+    if (
+      check_in.getDay() === check_out.getDay() &&
+      hora_ingreso >= hora_fin_jornada_noturno &&
+      hora_salida <= hora_inicio_jornada_noturno
+    ) {
+      return 0
+    }
+
+    if (check_in.getDay() === check_out.getDay()) {
+      const horaIngresoAcotada = Math.max(hora_ingreso, hora_inicio_jornada_noturno)
+      horasExtrasSegundos += hora_salida - horaIngresoAcotada
+      return horasExtrasSegundos
+    }
+
+    if (check_in.getDay() !== check_out.getDay()) {
+      const horaIngresoAcotada = Math.max(hora_ingreso, hora_inicio_jornada_noturno)
+      const horaFinAcotada = Math.max(hora_salida, hora_fin_jornada_noturno)
+      horasExtrasSegundos += convertHourToSeconds('24:00') - horaIngresoAcotada
+      horasExtrasSegundos += horaFinAcotada
+    }
+  }
+
+  // logica
+
   return 0
+}
+
+const calcularRD = (scheduleType: ScheduleType, accessControls: AccessControls): number => {
+  let horasExtrasSegundos = 0
+
+  const { check_in, check_out } = accessControls.attributes
+
+  if (scheduleType === 'fixed' || scheduleType === 'fixed_halftime') {
+    if (check_in.getDay() != DAYS_OF_WEEK_NAMES.SUNDAY && !isHoliday(check_in)) return 0
+
+    const rangoHorasTrabajoPorDia = mapHorarioDeTrabajo(scheduleType)
+
+    const hora_ingreso = convertHourToSeconds(
+      `${check_in.getHours()}:${check_in.getMinutes()}:${check_in.getSeconds()}`
+    )
+    const hora_salida = convertHourToSeconds(
+      `${check_out.getHours()}:${check_out.getMinutes()}:${check_out.getSeconds()}`
+    )
+
+    const horario_del_dia = rangoHorasTrabajoPorDia.get(check_in.getDay())
+    if (!horario_del_dia) return 0
+
+    const tiempodescanso = horario_del_dia.breakTime
+      ? horario_del_dia.breakTime.finished_at - horario_del_dia.breakTime.start_at
+      : 0
+
+    horasExtrasSegundos += hora_salida - hora_ingreso - tiempodescanso
+  } else if (scheduleType === 'flexible') {
+  }
+  return horasExtrasSegundos
+}
+
+const mapHorarioDeTrabajo = (scheduleType: ScheduleType) => {
+  const horariosDeTrabajo = getWorkSchedule(scheduleType)
+
+  const rangoHorasTrabajoPorDia = new Map<
+    number,
+    {
+      start_at: number
+      finished_at: number
+      breakTime: {
+        start_at: number
+        finished_at: number
+      } | null
+    }
+  >()
+
+  horariosDeTrabajo?.schedules.forEach((horario) => {
+    horario.days.forEach((dia) => {
+      rangoHorasTrabajoPorDia.set(dia, {
+        start_at: convertHourToSeconds(horario.workHours.start),
+        finished_at: convertHourToSeconds(horario.workHours.end),
+        breakTime: horario.breakTime
+          ? {
+              start_at: convertHourToSeconds(horario.breakTime.start),
+              finished_at: convertHourToSeconds(horario.breakTime.end)
+            }
+          : null
+      })
+    })
+  })
+
+  return rangoHorasTrabajoPorDia
 }
 
 export const overtimerCalculator = {
@@ -457,7 +446,8 @@ export const overtimerCalculator = {
   calcularHEN,
   calcularHEDDominical,
   calcularHENDominical,
-  calcularRCN
+  calcularRC,
+  calcularRD
 }
 
 // 3. Calculo de horas extras y salario a devengar
@@ -466,6 +456,6 @@ export const overtimerCalculator = {
 // ✅ HEN: Horas extras nocturnas
 // ✅ HEDD: Hora extras diurna dominical o festiva
 // ✅ HEDN: Hora extra dominical nocturna
-// RC: Recargo nocturno
+// ✅ RC: Recargo nocturno
 // RD: Recargo dominical
 // RND: Recargo nocturno dominical
