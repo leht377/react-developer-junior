@@ -1,16 +1,17 @@
 import { EmployeeEntity } from '@/domain/entities/employe.entity'
-import { employeesList } from '../data/employee'
+
 import { EmployeMapper } from '@/utils/mappers/employe.mapper'
 import { generatePagination } from '@/utils/helpers/generatePagination.helper'
 import { Pagination } from '@/domain/types/pagination'
 import { Query } from '@/domain/types/query'
+import response from '../data/employess.json'
 
 const getEmployees = (query: Query): { data: EmployeeEntity[]; pagination: Pagination } => {
   const { page, limit, orderBy, order, search } = query
-  let filteredData = employeesList.data
+  let filteredData = response.data as any
 
   if (search) {
-    filteredData = filteredData.filter((employee) => {
+    filteredData = filteredData.filter((employee: any) => {
       return (
         (search.name
           ? employee.attributes.first_name.toLowerCase().includes(search.name.toLowerCase())
@@ -26,7 +27,7 @@ const getEmployees = (query: Query): { data: EmployeeEntity[]; pagination: Pagin
   }
 
   if (orderBy) {
-    filteredData.sort((a, b) => {
+    filteredData.sort((a: any, b: any) => {
       if (orderBy === 'salary') {
         return order === 'desc'
           ? b.attributes.salary - a.attributes.salary
@@ -45,10 +46,9 @@ const getEmployees = (query: Query): { data: EmployeeEntity[]; pagination: Pagin
   const startIndex = (pagination.page - 1) * pagination.limit
   const endIndex = startIndex + pagination.limit
 
-  const data = filteredData.slice(startIndex, endIndex).map((d) => EmployeMapper(d))
+  const datafiltered = filteredData.slice(startIndex, endIndex).map((d: any) => EmployeMapper(d))
 
- 
-  return { data, pagination }
+  return { data: datafiltered, pagination }
 }
 
 export { getEmployees }
