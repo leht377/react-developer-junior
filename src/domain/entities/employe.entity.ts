@@ -1,4 +1,4 @@
-import { DAYS_OF_MONTH, WORKING_DAYS_PER_WEEK } from '@/constant'
+import { DAYS_OF_MONTH, MAX_LEGAL_WORKING_HOURS, WORKING_DAYS_PER_WEEK } from '@/constant'
 import { AccessControls } from '@/domain/types/accessControl'
 import { EmployeeAttributes } from '@/domain/types/employee'
 import { Workshifts } from '@/domain/types/workshifts'
@@ -19,8 +19,8 @@ export class EmployeeEntity {
   }
 
   private calculateRegularHourlyRate = (): number => {
-    const maxWeeklyHours = this.relationships.workshifts[0]?.attributes?.maximun_weekly_hours ?? 0
-    const dailyWorkingHours = maxWeeklyHours / WORKING_DAYS_PER_WEEK
+    
+    const dailyWorkingHours = MAX_LEGAL_WORKING_HOURS / WORKING_DAYS_PER_WEEK
 
     if (dailyWorkingHours <= 0) return 0 // Prevent division by 0
 
