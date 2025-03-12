@@ -6,14 +6,20 @@ interface PaginationProps {
   currentPage: number
   totalPages: number
   onPageChange: (page: number) => void
+  isloading?: boolean
 }
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
+const Pagination: React.FC<PaginationProps> = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+  isloading
+}) => {
   return (
     <div className='flex items-center justify-center space-x-2 '>
       <button
         onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
+        disabled={currentPage === 1 || isloading}
         className='flex items-center gap-2 disabled:opacity-50 cursor-pointer shadow-sm px-2 py-1 rounded-sm bg-slate-100 font-medium text-gray-900 '
       >
         Anterior
@@ -25,7 +31,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
 
       <button
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        disabled={currentPage === totalPages || isloading}
         className='flex items-center gap-2 disabled:opacity-50 cursor-pointer shadow-sm px-2 py-1 rounded-sm bg-slate-100 font-medium text-gray-900'
       >
         Siguiente

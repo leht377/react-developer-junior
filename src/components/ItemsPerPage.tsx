@@ -4,12 +4,14 @@ interface ItemsPerPageProps {
   options?: number[];
   selected: number;
   onChange: (value: number) => void;
+  isloading?: boolean
 }
 
 const ItemsPerPage: React.FC<ItemsPerPageProps> = ({
   options = [5, 10, 20, 50],
   selected,
   onChange,
+  isloading = false
 }) => {
   return (
     <div className="flex items-center space-x-3 bg-gray-100 p-2 rounded-lg shadow-sm">
@@ -18,6 +20,7 @@ const ItemsPerPage: React.FC<ItemsPerPageProps> = ({
         value={selected}
         onChange={(e) => onChange(Number(e.target.value))}
         className="bg-white border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+        disabled={isloading}
       >
         {options.map((option) => (
           <option key={option} value={option} className="text-gray-700">

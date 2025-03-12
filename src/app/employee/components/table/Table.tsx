@@ -48,12 +48,17 @@ const Table: React.FC<Props> = ({
     <React.Fragment>
       <div className='flex flex-col gap-5 w-auto px-2 lg:px-20 overflow-hidden '>
         <div className='flex md:justify-between md:items-center mt-3 flex-col md:flex-row gap-8 justify-start items-start'>
-          <ItemsPerPage onChange={onChangeItemsPerPage} selected={itemsPerPage} />
+          <ItemsPerPage
+            onChange={onChangeItemsPerPage}
+            selected={itemsPerPage}
+            isloading={isloading}
+          />
           {pagination && (
             <Pagination
               currentPage={pagination.page}
               totalPages={pagination.totalPages}
               onPageChange={onPageChange}
+              isloading={isloading}
             />
           )}
         </div>
@@ -99,12 +104,17 @@ const Table: React.FC<Props> = ({
           </table>
         </div>
         <div className='flex md:justify-between md:items-center mt-3 flex-col md:flex-row gap-8 justify-start items-start'>
-          {/* <ItemsPerPage onChange={onChangeItemsPerPage} selected={itemsPerPage} /> */}
+          <ItemsPerPage
+            onChange={onChangeItemsPerPage}
+            selected={itemsPerPage}
+            isloading={isloading}
+          />
           {pagination && (
             <Pagination
               currentPage={pagination.page}
               totalPages={pagination.totalPages}
               onPageChange={onPageChange}
+              isloading={isloading}
             />
           )}
         </div>
