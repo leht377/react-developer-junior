@@ -63,9 +63,9 @@ const Table: React.FC<Props> = ({
           )}
         </div>
 
-        <div className='min-w-64 overflow-x-auto rounded-lg shadow-sm '>
+        <div className='min-w-64 overflow-x-auto max-h-[500px] overflow-y-auto rounded-lg shadow-sm relative'>
           <table className='w-full border border-gray-300'>
-            <thead className='text-start'>
+            <thead className='text-start sticky top-0'>
               <tr className='bg-blue-600 text-white'>
                 <th className=' px-4 py-2'>
                   Nombre
