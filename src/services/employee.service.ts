@@ -6,7 +6,9 @@ import { Pagination } from '@/domain/types/pagination'
 import { Query } from '@/domain/types/query'
 import response from '../data/employess.json'
 
-const getEmployees = (query: Query): { data: EmployeeEntity[]; pagination: Pagination } => {
+const getEmployees = async (
+  query: Query
+): Promise<{ data: EmployeeEntity[]; pagination: Pagination }> => {
   const { page, limit, orderBy, order, search } = query
   let filteredData = response.data as any
 
@@ -47,7 +49,7 @@ const getEmployees = (query: Query): { data: EmployeeEntity[]; pagination: Pagin
   const endIndex = startIndex + pagination.limit
 
   const datafiltered = filteredData.slice(startIndex, endIndex).map((d: any) => EmployeMapper(d))
-
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   return { data: datafiltered, pagination }
 }
 
