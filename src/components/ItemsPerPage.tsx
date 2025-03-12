@@ -12,20 +12,20 @@ const ItemsPerPage: React.FC<ItemsPerPageProps> = ({
   onChange,
 }) => {
   return (
-    <div className="flex items-center space-x-2">
-      <span className="text-gray-700">Mostrar:</span>
+    <div className="flex items-center space-x-3 bg-gray-100 p-2 rounded-lg shadow-sm">
+      <span className="text-sm text-gray-600 font-medium">Mostrar</span>
       <select
         value={selected}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="border rounded-md px-2 py-1 focus:ring-2 focus:ring-blue-500"
+        className="bg-white border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
       >
         {options.map((option) => (
-          <option key={option} value={option}>
+          <option key={option} value={option} className="text-gray-700">
             {option}
           </option>
         ))}
       </select>
-      <span className="text-gray-700">items</span>
+      <span className="text-sm text-gray-600 font-medium">items</span>
     </div>
   );
 };

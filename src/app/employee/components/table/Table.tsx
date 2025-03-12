@@ -3,12 +3,12 @@ import { EmployeeEntity } from '@/domain/entities/employe.entity'
 import React, { useEffect, useState } from 'react'
 import RowBody from './components/RowBody'
 import RowSkeleton from './components/RowSkeleton'
-import Pagination from './components/Pagination'
-import ItemsPerPage from './components/ItemsPerPage'
+import ItemsPerPage from '../../../../components/ItemsPerPage'
 import useSorting from './hooks/useSorting'
 import { Pagination as TypePagination } from '@/domain/types/pagination'
 import ModalHE from '../ModalHE'
 import { useEmployeeContext } from '../../context/EmployeeContext'
+import Pagination from '@/components/Pagination'
 interface Props {
   data: EmployeeEntity[]
   pagination?: TypePagination
@@ -44,12 +44,10 @@ const Table: React.FC<Props> = ({
     }
   }, [idseleccionado])
 
-
-  
   return (
     <React.Fragment>
-      <div className='flex flex-col gap-5 '>
-        <div className='flex justify-between items-center'>
+      <div className='flex flex-col gap-5 w-auto px-2 lg:px-20 overflow-hidden '>
+        <div className='flex md:justify-between md:items-center mt-3 flex-col md:flex-row gap-8 justify-start items-start'>
           <ItemsPerPage onChange={onChangeItemsPerPage} selected={itemsPerPage} />
           {pagination && (
             <Pagination
@@ -59,10 +57,11 @@ const Table: React.FC<Props> = ({
             />
           )}
         </div>
-        <div className='w-full max-h-[460px] min-w-2  flex justify-center items-start overflow-y-auto py-10'>
-          <table className='w-full border border-gray-300 rounded-lg overflow-hidden'>
-            <thead>
-              <tr className="bg-blue-600 text-white">
+
+        <div className='min-w-64 overflow-x-auto rounded-lg shadow-sm '>
+          <table className='w-full border border-gray-300'>
+            <thead className='text-start'>
+              <tr className='bg-blue-600 text-white'>
                 <th className=' px-4 py-2'>
                   Nombre
                   <button onClick={() => sortData('firstName')}>
@@ -99,6 +98,16 @@ const Table: React.FC<Props> = ({
             </tbody>
           </table>
         </div>
+        <div className='flex md:justify-between md:items-center mt-3 flex-col md:flex-row gap-8 justify-start items-start'>
+          {/* <ItemsPerPage onChange={onChangeItemsPerPage} selected={itemsPerPage} /> */}
+          {pagination && (
+            <Pagination
+              currentPage={pagination.page}
+              totalPages={pagination.totalPages}
+              onPageChange={onPageChange}
+            />
+          )}
+        </div>
       </div>
       <ModalHE isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </React.Fragment>
@@ -106,3 +115,4 @@ const Table: React.FC<Props> = ({
 }
 
 export default Table
+// w-full max-h-[460px] min-w-2  flex justify-center items-start overflow-y-auto py-10
